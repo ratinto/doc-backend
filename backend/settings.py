@@ -18,7 +18,7 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.messages',
+    'django.contrib.messages', # This app is installed
     'django.contrib.staticfiles',
     # Third-party
     'rest_framework',
@@ -36,7 +36,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware', # This middleware is present
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -54,7 +54,7 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.template.context_processors.messages',
+                'django.contrib.messages.context_processors.messages', # <--- ADD THIS LINE
             ],
         },
     },
@@ -94,11 +94,10 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # Ensure this directory exists and is writable
-
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STORAGES = {
-    "default": { # <--- ADD THIS DEFAULT STORAGE CONFIG
+    "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
     },
     "staticfiles": {
