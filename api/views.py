@@ -37,12 +37,18 @@ class DocumentViewSet(viewsets.ModelViewSet):
         extracted_text = ""
         if doc_file and doc_file.name.lower().endswith('.pdf'):
             try:
-                pdf_reader = PdfReader(doc_file)
+                # Read the content into a BytesIO object
+                from io import BytesIO
+                file_content = BytesIO(doc_file.read())
+                
+                pdf_reader = PdfReader(file_content) # Pass the BytesIO object
                 for page in pdf_reader.pages:
-                    extracted_text += page.extract_text()
+                    extracted_text += page.extract_text() or "" # Add .or "" to handle None
             except Exception as e:
+                # Log the specific error for debugging
+                print(f"Error extracting PDF text: {e}") 
                 extracted_text = f"Error extracting PDF text: {e}"
-        # (You can add handling for .txt, .docx, images with OCR, etc.)
+        
         serializer.save(owner=self.request.user, extracted_text=extracted_text)
 
 class AskQuestionView(APIView):
